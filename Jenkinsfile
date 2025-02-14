@@ -7,13 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Echo version') {
-            steps {
-                // Display Maven version
-                sh 'echo print maven version'
-                sh 'mvn -version'
-            }
-        }
         stage('Build') {
             steps {
                 // Clone the GitHub repository
