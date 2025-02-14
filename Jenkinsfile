@@ -1,22 +1,41 @@
 pipeline {
-  agent any
-  stages {
-    stage('Maven Build') {
-      steps {
-        sh 'mvn clean package -DskipTests=true'
-        archiveArtifacts 'target/hello-demo-*'
-      }
+    agent any
+
+    tools {
+        // Ensure Maven is installed and available.
+        maven "Maven"
     }
 
-    stage('Maven Test') {
-      steps {
-        sh 'mvn test'
-        junit(testResults: 'target/surefire-reports/TEST*.xml*', keepProperties: true, keepTestNames: true)
-      }
+    stages {
+        stage('Echo version') {
+            steps {
+                // Display Maven version
+                sh 'echo print maven version'
+                sh 'mvn -version'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Clone the GitHub repository
+                // git branch: 'main', url: 'https://github.com/dileepkumaradabala/jenkins-hello-world.git'
+
+                // Build the project using Maven, ignoring test failures
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                // Run unit tests using Maven
+                sh 'mvn test'
+            }
+        }
     }
 
-  }
-  tools {
-    maven 'm398'
-  }
+    post {
+        success {
+            // Archive test results and JAR file on successful build
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+        }
+    }
 }
