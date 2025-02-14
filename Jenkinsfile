@@ -7,6 +7,11 @@ pipeline {
     }
 
     stages {
+        stage('gitwebhook'){
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/dileepkumaradabala/jenkins-hello-world.git']])
+            }
+        }
         stage('Build') {
             steps {
                 // Clone the GitHub repository
