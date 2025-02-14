@@ -26,7 +26,7 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    for(int i=0;i<60;i++0){
+                    for(int i=0;i<60;i++){
                         echo "$(i+1)"
                         sleep 1
                     }
