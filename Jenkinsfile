@@ -25,6 +25,12 @@ pipeline {
         }
         stage('Unit Test') {
             steps {
+                script {
+                    for(int i=0;i<60;i++0){
+                        echo "$(i+1)"
+                        sleep 1
+                    }
+                }
                 // Run unit tests using Maven
                 sh 'mvn test'
             }
